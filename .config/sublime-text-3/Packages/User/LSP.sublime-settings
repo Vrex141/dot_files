@@ -1,0 +1,49 @@
+{
+	"clients":
+	{
+		"lsp-tsserver":
+		{
+			"enabled": true
+		},
+		"ruby":
+		{
+			"command":
+			[
+				"solargraph",
+				"socket"
+			],
+			"enabled": true,
+			"languageId": "ruby",
+			"scopes":
+			[
+				"source.ruby",
+				"source.ruby.rails"
+			],
+			"syntaxes":
+			[
+				"Packages/Ruby/Ruby.sublime-syntax",
+				"Packages/Rails/Ruby on Rails.sublime-syntax",
+				"Packages/Rails/HTML (Rails).sublime-syntax"
+			],
+			"tcp_port": 7658
+		},
+		"vue-ls":
+		{
+			"command":
+			[
+				"node",
+				"/usr/lib/node_modules/vue-language-server/bin/vls"
+			],
+			"enabled": true,
+			"languageId": "vue",
+			"scopes":
+			[
+				"text.html.vue"
+			],
+			"syntaxes":
+			[
+				"Packages/Vue Syntax Highlight/vue.tmLanguage"
+			]
+		}
+	}
+}

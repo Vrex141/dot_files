@@ -1,0 +1,38 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"C++ Completions",
+		"C++11",
+		"Clang Format",
+		"ESLint Fix",
+		"Git",
+		"Git Conflict Resolver",
+		"GitStatus",
+		"Handlebars",
+		"HTML2Slim",
+		"LSP",
+		"Node Completions",
+		"NodeRequirer",
+		"Package Control",
+		"Pretty Ruby",
+		"Pretty YAML",
+		"Qt Completions for C++",
+		"Ruby Slim",
+		"Sass",
+		"SASS Build",
+		"SublimeLinter",
+		"SublimeLinter-clang",
+		"SublimeLinter-contrib-slim-lint",
+		"SublimeLinter-contrib-yamllint",
+		"SublimeLinter-eslint",
+		"SublimeLinter-rubocop",
+		"Theme - Spaceblack",
+		"Vue Syntax Highlight",
+		"Web Inspector"
+	]
+}
