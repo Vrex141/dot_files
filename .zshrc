@@ -168,7 +168,7 @@ fucking_git_flow() {
       if [ "$CURRENT_BRANCH" != "" ]; then
         git checkout v_3_9_test && git pull && git cherry-pick "$1" && git push
         fucking_git_flow "$1"
-        git checkout "$1" && git pull
+        git checkout "$CURRENT_BRANCH" && git pull
       fi
     else
         echo "WTF: no commit digest\n"
