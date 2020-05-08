@@ -17,7 +17,12 @@ fi
   eval $(thefuck --alias)
   export GOPATH="$HOME/.go"
   export GOROOT="/opt/go"
-# Set name of the theme to load --- if set to "random", it will
+
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+  # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -109,6 +114,68 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+backup_dot_files() {
+  BACKUP_PATH=`pwd`
+
+  if [ "$1" != "" ]; then
+    BACKUP_PATH="$2"
+  fi
+
+  echo "Backuping rc files" 
+  cp $HOME/.bashrc $BACKUP_PATH
+  cp $HOME/.zshrc $BACKUP_PATH
+  cp $HOME/.vimrc $BACKUP_PATH
+
+  echo "Backuping i3 config"
+  cp $HOME/.config/i3/* $BACKUP_PATH/.config/i3
+  cp $HOME/.config/i3status/config $BACKUP_PATH/.config/i3status
+
+  echo "Backuping Sublime config and packages"
+  cp $HOME/.config/sublime-text-3/Packages/User/* $BACKUP_PATH/.config/sublime-text-3/Packages/User
+  cp $HOME/.config/sublime-text-3/Installed\ Packages/* $BACKUP_PATH/.config/sublime-text-3/Installed\ Packages
+  
+  echo "Done"
+}
+
+
+fucking_git_flow() {
+    if [ "$1" != "" ]; then
+      CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+      
+      if [ "$2" != "" ]; then
+        CURRENT_BRANCH="$2"
+      fi
+
+      echo "Current branch: $CURRENT_BRANCH\n"  
+      if [ "$CURRENT_BRANCH" = "v_3_9_test" ]; then
+        echo "Pushing to v_3_9\n"
+        git checkout v_3_9 && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to develop\n"
+        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Returning to v_3_9_test\n"
+        git checkout v_3_9_test && git checkout . && git pull
+        return 
+      fi
+
+      if [ "$CURRENT_BRANCH" = "v_3_9" ]; then 
+        echo "Pushing to develop\n"
+        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Returning to v_3_9\n"
+        git checkout v_3_9 && git checkout . && git pull
+        return
+      fi
+
+      if [ "$CURRENT_BRANCH" != "" ]; then
+        git checkout v_3_9_test && git pull && git cherry-pick "$1" && git push
+        fucking_git_flow "$1"
+        git checkout "$1" && git pull
+      fi
+    else
+        echo "WTF: no commit digest\n"
+    fi
+}
+
+alias fgf="fucking_git_flow"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
