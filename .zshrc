@@ -118,10 +118,10 @@ backup_dot_files() {
   BACKUP_PATH=`pwd`
 
   if [ "$1" != "" ]; then
-    BACKUP_PATH="$2"
+    BACKUP_PATH="$1"
   fi
 
-  echo "Backuping rc files" 
+  echo "Backuping rc files"
   cp $HOME/.bashrc $BACKUP_PATH
   cp $HOME/.zshrc $BACKUP_PATH
   cp $HOME/.vimrc $BACKUP_PATH
@@ -133,7 +133,7 @@ backup_dot_files() {
   echo "Backuping Sublime config and packages"
   cp $HOME/.config/sublime-text-3/Packages/User/* $BACKUP_PATH/.config/sublime-text-3/Packages/User
   cp $HOME/.config/sublime-text-3/Installed\ Packages/* $BACKUP_PATH/.config/sublime-text-3/Installed\ Packages
-  
+
   echo "Done"
 }
 
@@ -141,23 +141,49 @@ backup_dot_files() {
 fucking_git_flow() {
     if [ "$1" != "" ]; then
       CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-      
+
       if [ "$2" != "" ]; then
         CURRENT_BRANCH="$2"
       fi
 
-      echo "Current branch: $CURRENT_BRANCH\n"  
+      echo "Current branch: $CURRENT_BRANCH\n"
       if [ "$CURRENT_BRANCH" = "v_3_9_test" ]; then
         echo "Pushing to v_3_9\n"
         git checkout v_3_9 && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to v_4_0_test\n"
+        git checkout v_4_0_test && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to v_4_0\n"
+        git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Pushing to develop\n"
         git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Returning to v_3_9_test\n"
         git checkout v_3_9_test && git checkout . && git pull
-        return 
+        return
       fi
 
-      if [ "$CURRENT_BRANCH" = "v_3_9" ]; then 
+      if [ "$CURRENT_BRANCH" = "v_3_9" ]; then
+        echo "Pushing to v_4_0_test\n"
+        git checkout v_4_0_test && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to v_4_0\n"
+        git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to develop\n"
+        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Returning to v_3_9\n"
+        git checkout v_3_9 && git checkout . && git pull
+        return
+      fi
+
+      if [ "$CURRENT_BRANCH" = "v_4_0_test" ]; then
+        echo "Pushing to v_4_0\n"
+        git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to develop\n"
+        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Returning to v_3_9\n"
+        git checkout v_3_9 && git checkout . && git pull
+        return
+      fi
+
+      if [ "$CURRENT_BRANCH" = "v_4_0" ]; then
         echo "Pushing to develop\n"
         git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Returning to v_3_9\n"
