@@ -139,11 +139,12 @@ backup_dot_files() {
 
 
 fucking_git_flow() {
+    MASTER_BRANCH="develop"
     if [ "$1" != "" ]; then
       CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
       if [ "$2" != "" ]; then
-        CURRENT_BRANCH="$2"
+        MASTER_BRANCH="$2"
       fi
 
       echo "Current branch: $CURRENT_BRANCH\n"
@@ -154,8 +155,8 @@ fucking_git_flow() {
         git checkout v_4_0_test && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Pushing to v_4_0\n"
         git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Pushing to develop\n"
-        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to $MASTER_BRANCH\n"
+        git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Returning to v_3_9_test\n"
         git checkout v_3_9_test && git checkout . && git pull
         return
@@ -166,8 +167,8 @@ fucking_git_flow() {
         git checkout v_4_0_test && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Pushing to v_4_0\n"
         git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Pushing to develop\n"
-        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to $MASTER_BRANCH\n"
+        git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Returning to v_3_9\n"
         git checkout v_3_9 && git checkout . && git pull
         return
@@ -176,16 +177,16 @@ fucking_git_flow() {
       if [ "$CURRENT_BRANCH" = "v_4_0_test" ]; then
         echo "Pushing to v_4_0\n"
         git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Pushing to develop\n"
-        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to $MASTER_BRANCH\n"
+        git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Returning to v_3_9\n"
         git checkout v_3_9 && git checkout . && git pull
         return
       fi
 
       if [ "$CURRENT_BRANCH" = "v_4_0" ]; then
-        echo "Pushing to develop\n"
-        git checkout develop && git checkout . && git pull && git cherry-pick "$1" && git push
+        echo "Pushing to $MASTER_BRANCH\n"
+        git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Returning to v_3_9\n"
         git checkout v_3_9 && git checkout . && git pull
         return
