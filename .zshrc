@@ -137,6 +137,32 @@ backup_dot_files() {
   echo "Done"
 }
 
+start_rails_server () {
+  RAILS_SERVER_DIR="~/rails_projects/medods"
+  RAILS_SERVER_PORT="5100"
+
+  if [ "$1" != "" ]; then
+    RAILS_SERVER_DIR="$1"
+  fi
+
+  if [ "$2" != "" ]; then
+    RAILS_SERVER_PORT="$2"
+  fi
+
+  echo "Changing directory to $RAILS_SERVER_DIR\n"
+  cd $RAILS_SERVER_DIR
+
+  echo "Yarn package check\n"
+  yarn install
+
+  echo "Running migrations\n"
+  rake db:migrate
+
+  echo "Starting server on port $RAILS_SERVER_PORT\n"
+  rails s -b 0.0.0.0 -p 5100
+}
+
+alias srs="start_rails_server"
 
 fucking_git_flow() {
     MASTER_BRANCH="develop"
@@ -157,8 +183,8 @@ fucking_git_flow() {
         git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Pushing to $MASTER_BRANCH\n"
         git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Returning to v_3_9_test\n"
-        git checkout v_3_9_test && git checkout . && git pull
+        echo "Returning to $CURRENT_BRANCH\n"
+        git checkout $CURRENT_BRANCH && git checkout . && git pull
         return
       fi
 
@@ -169,8 +195,8 @@ fucking_git_flow() {
         git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Pushing to $MASTER_BRANCH\n"
         git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Returning to v_3_9\n"
-        git checkout v_3_9 && git checkout . && git pull
+        echo "Returning to $CURRENT_BRANCH\n"
+        git checkout $CURRENT_BRANCH && git checkout . && git pull
         return
       fi
 
@@ -179,16 +205,16 @@ fucking_git_flow() {
         git checkout v_4_0 && git checkout . && git pull && git cherry-pick "$1" && git push
         echo "Pushing to $MASTER_BRANCH\n"
         git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Returning to v_3_9\n"
-        git checkout v_3_9 && git checkout . && git pull
+        echo "Returning to $CURRENT_BRANCH\n"
+        git checkout $CURRENT_BRANCH && git checkout . && git pull
         return
       fi
 
       if [ "$CURRENT_BRANCH" = "v_4_0" ]; then
         echo "Pushing to $MASTER_BRANCH\n"
         git checkout "$MASTER_BRANCH" && git checkout . && git pull && git cherry-pick "$1" && git push
-        echo "Returning to v_3_9\n"
-        git checkout v_3_9 && git checkout . && git pull
+        echo "Returning to $CURRENT_BRANCH\n"
+        git checkout $CURRENT_BRANCH && git checkout . && git pull
         return
       fi
 
