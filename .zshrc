@@ -138,7 +138,7 @@ backup_dot_files() {
 }
 
 start_rails_server () {
-  RAILS_SERVER_DIR="~/rails_projects/medods"
+  RAILS_SERVER_DIR="$HOME/rails_projects/medods"
   RAILS_SERVER_PORT="5100"
 
   if [ "$1" != "" ]; then
@@ -149,16 +149,16 @@ start_rails_server () {
     RAILS_SERVER_PORT="$2"
   fi
 
-  echo "Changing directory to $RAILS_SERVER_DIR\n"
+  echo "\nChanging directory to $RAILS_SERVER_DIR\n"
   cd $RAILS_SERVER_DIR
 
-  echo "Yarn package check\n"
+  echo "\nYarn package check\n"
   yarn install
 
-  echo "Running migrations\n"
+  echo "\nRunning migrations\n"
   rake db:migrate
 
-  echo "Starting server on port $RAILS_SERVER_PORT\n"
+  echo "\nStarting server on port $RAILS_SERVER_PORT\n"
   rails s -b 0.0.0.0 -p 5100
 }
 
